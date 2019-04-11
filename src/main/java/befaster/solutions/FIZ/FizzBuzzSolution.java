@@ -16,7 +16,11 @@ public class FizzBuzzSolution {
 		}
 
 		if (isDeluxe(number)) {
-			numberIdentifiers.add("deluxe");
+			if (number % 2 == 0) {
+				numberIdentifiers.add("deluxe");
+			} else {
+				numberIdentifiers.add("fake deluxe");
+			}
 		}
 
 		if (!numberIdentifiers.isEmpty()) {
@@ -47,8 +51,3 @@ public class FizzBuzzSolution {
 		return true;
 	}
 }
-
-
-
-
-
