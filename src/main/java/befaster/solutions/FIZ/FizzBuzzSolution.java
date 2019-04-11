@@ -1,36 +1,41 @@
 package befaster.solutions.FIZ;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FizzBuzzSolution {
 
 	public String fizzBuzz(Integer number) {
-		String numberStr = String.valueOf(number);
-		boolean identicalDigits = containsIdenticalDigits(numberStr);
-		if ((number % 3 == 0 || numberStr.contains("3")) && (number % 5 == 0 || numberStr.contains("5"))
-				&& (number > 10 && identicalDigits)) {
-			return "fizz buzz deluxe";
-		} else if (number > 10 && identicalDigits) {
-			return "deluxe";
-		} else if ((number % 3 == 0 || numberStr.contains("3")) && (number % 5 == 0 || numberStr.contains("5"))) {
-			return "fizz buzz";
-		} else if (number % 3 == 0 || numberStr.contains("3")) {
-			return "fizz";
-		} else if (number % 5 == 0 || numberStr.contains("5")) {
-			return "buzz";
+		List<String> numberIdentifiers = new ArrayList<>();
+		if (isFizz(number)) {
+			numberIdentifiers.add("fizz");
+		}
+
+		if (isBuzz(number)) {
+			numberIdentifiers.add("buzz");
+		}
+
+		if (isDeluxe(number)) {
+			numberIdentifiers.add("deluxe");
+		}
+
+		if (!numberIdentifiers.isEmpty()) {
+			return String.join(" ", numberIdentifiers);
 		} else {
 			return String.valueOf(number);
 		}
 	}
 
 	public static boolean isFizz(int number) {
-		return (number % 3 == 0 || String.valueOf(number).contains("3")); 
+		return (number % 3 == 0 || String.valueOf(number).contains("3"));
 	}
 
 	public static boolean isBuzz(int number) {
-		return (number % 5 == 0 || String.valueOf(number).contains("5")); 
+		return (number % 5 == 0 || String.valueOf(number).contains("5"));
 	}
 
 	public static boolean isDeluxe(int number) {
-		return (number > 10 && containsIdenticalDigits(String.valueOf(number))); 
+		return (number > 10 && containsIdenticalDigits(String.valueOf(number)));
 	}
 
 	public static boolean containsIdenticalDigits(String numberStr) {
@@ -42,6 +47,7 @@ public class FizzBuzzSolution {
 		return true;
 	}
 }
+
 
 
 

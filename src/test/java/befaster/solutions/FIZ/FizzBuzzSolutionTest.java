@@ -17,8 +17,9 @@ public class FizzBuzzSolutionTest {
 
     @Test
     public void checkIdentical() {
-        assertThat(fiz.fizzBuzz(555), equalTo("fizz buzz deluxe"));
+        assertThat(fiz.fizzBuzz(13), equalTo("fizz"));
     	
     }
 }
+
 
