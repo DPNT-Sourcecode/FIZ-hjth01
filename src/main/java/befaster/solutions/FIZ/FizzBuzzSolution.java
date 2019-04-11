@@ -39,7 +39,8 @@ public class FizzBuzzSolution {
 	}
 
 	public static boolean isDeluxe(int number) {
-		return (number > 10 && containsIdenticalDigits(String.valueOf(number)));
+		return (number % 3 == 0 && String.valueOf(number).contains("3"))
+				|| (number % 5 == 0 && String.valueOf(number).contains("5"));
 	}
 
 	public static boolean containsIdenticalDigits(String numberStr) {
@@ -51,3 +52,4 @@ public class FizzBuzzSolution {
 		return true;
 	}
 }
+
