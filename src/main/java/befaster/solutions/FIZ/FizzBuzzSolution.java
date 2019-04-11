@@ -8,7 +8,7 @@ public class FizzBuzzSolution {
 		if ((number % 3 == 0 || numberStr.contains("3")) && (number % 5 == 0 || numberStr.contains("5"))
 				&& (number > 10 && identicalDigits)) {
 			return "fizz buzz deluxe";
-		} else if (identicalDigits) {
+		} else if (number > 10 && identicalDigits) {
 			return "deluxe";
 		} else if ((number % 3 == 0 || numberStr.contains("3")) && (number % 5 == 0 || numberStr.contains("5"))) {
 			return "fizz buzz";
@@ -30,5 +30,6 @@ public class FizzBuzzSolution {
 		return true;
 	}
 }
+
 
 
