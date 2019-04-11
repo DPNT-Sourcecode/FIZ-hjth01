@@ -21,6 +21,18 @@ public class FizzBuzzSolution {
 		}
 	}
 
+	public static boolean isFizz(int number) {
+		return (number % 3 == 0 || String.valueOf(number).contains("3")); 
+	}
+
+	public static boolean isBuzz(int number) {
+		return (number % 5 == 0 || String.valueOf(number).contains("5")); 
+	}
+
+	public static boolean isDeluxe(int number) {
+		return (number > 10 && containsIdenticalDigits(String.valueOf(number))); 
+	}
+
 	public static boolean containsIdenticalDigits(String numberStr) {
 		for (char c : numberStr.toCharArray()) {
 			if (c != numberStr.charAt(0)) {
@@ -30,6 +42,7 @@ public class FizzBuzzSolution {
 		return true;
 	}
 }
+
 
 
 
