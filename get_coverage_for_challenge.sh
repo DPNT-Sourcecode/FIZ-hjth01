@@ -8,28 +8,22 @@ set -o pipefail
 SCRIPT_CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 CHALLENGE_ID=$1
-JACOCO_TEST_REPORT_XML_FILE="${SCRIPT_CURRENT_DIR}/build/reports/jacoco/test/jacocoTestReport.xml"
-mkdir -p ${SCRIPT_CURRENT_DIR}/target
-JAVA_CODE_COVERAGE_INFO="${SCRIPT_CURRENT_DIR}/coverage.tdl"
+SCOVERAGE_REPORT_XML_FILE="${SCRIPT_CURRENT_DIR}/target/scala-2.12/scoverage-report/scoverage.xml"
+SCALA_CODE_COVERAGE_INFO="${SCRIPT_CURRENT_DIR}/coverage.tdl"
 
-export JAVA_OPTS=${JAVA_OPTS:-""}
-export GRADLE_OPTS=${GRADLE_OPTS:-""}
+( cd ${SCRIPT_CURRENT_DIR} && sbt clean coverage tdlTests coverageReport || true )
 
-( . ${SCRIPT_CURRENT_DIR}/gradlew -p ${SCRIPT_CURRENT_DIR} -q clean test jacocoTestReport --console=plain || true 1>&2 )
+[ -e ${SCALA_CODE_COVERAGE_INFO} ] && rm ${SCALA_CODE_COVERAGE_INFO}
 
-[ -e ${JAVA_CODE_COVERAGE_INFO} ] && rm ${JAVA_CODE_COVERAGE_INFO}
-
-if [ -f "${JACOCO_TEST_REPORT_XML_FILE}" ]; then
-    COVERAGE_OUTPUT=$(xmllint --xpath '//package[@name="befaster/solutions/'${CHALLENGE_ID}'"]/counter[@type="INSTRUCTION"]' ${JACOCO_TEST_REPORT_XML_FILE} || true)
-    PERCENTAGE=$(( 0 ))
+if [ -f "${SCOVERAGE_REPORT_XML_FILE}" ]; then
+    COVERAGE_OUTPUT=$(xmllint --xpath '//package[@name="befaster.solutions.'${CHALLENGE_ID}'"]/@statement-rate' ${SCOVERAGE_REPORT_XML_FILE} || true)
+    COVERAGE_PERCENT=$(( 0 ))
     if [[ ! -z "${COVERAGE_OUTPUT}" ]]; then
-        MISSED=$(echo $COVERAGE_OUTPUT | awk '{print missed, $3}' | tr '="' ' ' | awk '{print $2}')
-        COVERED=$(echo $COVERAGE_OUTPUT | awk '{print missed, $4}' | tr '="' ' '| awk '{print $2}')
-        TOTAL_LINES=$((MISSED + $COVERED))
-        PERCENTAGE=$(($COVERED * 100 / $TOTAL_LINES))
+        COVERAGE_PERCENT=$(echo ${COVERAGE_OUTPUT} | tr '".' ' ' | tr -s ' ' | awk '{printf "%.0f", $2}')
+        COVERAGE_PERCENT=$(( ${COVERAGE_PERCENT} + 0 ))
     fi
-    echo ${PERCENTAGE} > ${JAVA_CODE_COVERAGE_INFO}
-    cat ${JAVA_CODE_COVERAGE_INFO}
+    echo ${COVERAGE_PERCENT} > ${SCALA_CODE_COVERAGE_INFO}
+    cat ${SCALA_CODE_COVERAGE_INFO}
     exit 0
 else
     echo "No coverage report was found"

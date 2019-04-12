@@ -1,13 +1,10 @@
 .idea
 .DS_Store
-build
-.gradle
+target/
+.
 challenges/*.txt
 record/localstore
 record/bin
 jre
 config/credentials.config
-out
-target
-*.iml
 coverage.tdl
